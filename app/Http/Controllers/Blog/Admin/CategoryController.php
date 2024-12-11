@@ -12,7 +12,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        dd(__METHOD__);
     }
 
     /**
@@ -20,7 +20,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        dd(__METHOD__);
+
     }
 
     /**
@@ -28,15 +29,8 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        dd(__METHOD__);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
     }
 
     /**
@@ -44,7 +38,8 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        dd(__METHOD__);
+
     }
 
     /**
@@ -52,14 +47,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
-    }
+        dd(__METHOD__);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Blog\Admin\CategoryController;
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\RestTestController;
 use Auth;
@@ -18,6 +19,19 @@ Route::group(['prefix' => 'blog'], function () {
     Route::resource('posts', PostController::class)->names('blog.posts');
 });
 
+
+//>Админка блога
+$groupData = [
+ //   'namespace' => 'Blog\Admin',
+    'prefix' => 'admin/blog',
+];
+Route::group($groupData, function () {
+    //BlogCategory
+    $methods = ['index', 'create', 'store', 'edit', 'update'];
+    Route::resource('categories', CategoryController::class)
+        ->only($methods)
+        ->names('blog.admin.categories');
+});
 
 
 
