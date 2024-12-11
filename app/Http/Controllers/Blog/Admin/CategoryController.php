@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Blog\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 
-class CategoryController extends BaseController
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $paginator = BlogCategory::paginate(5);
+        $paginator = BlogCategory::query()->paginate(5);
 
         return view('blog.admin.category.index', compact('paginator'));
     }
