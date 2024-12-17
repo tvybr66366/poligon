@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Response;
 class CategoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a paginated listing of the blog categories.
      */
     public function index()
     {
@@ -38,6 +38,7 @@ class CategoryController extends Controller
     {
 
         dd(__METHOD__);
+
     }
 
     /**
