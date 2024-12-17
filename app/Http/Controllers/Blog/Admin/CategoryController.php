@@ -36,8 +36,8 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        dd(__METHOD__);
 
+        dd(__METHOD__);
     }
 
     /**
