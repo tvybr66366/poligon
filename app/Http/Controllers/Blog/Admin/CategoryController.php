@@ -66,6 +66,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, int $id)
     {
+        $rules = [
+            'title' => 'required|min:5|max:200',
+            'slug' => 'max:200',
+            'description' => 'string|min:3|max:200',
+            'parent_id' => 'required|integer|exists:blog_categories,id',
+        ];
+
+        $validatedData = $request->validate($rules);
+
+        //dd($validatedData);
+
+
+
         $item = BlogCategory::query()->find($id);
         if (empty($item)) {
             return back()
