@@ -9,13 +9,14 @@ use App\Models\BlogCategory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
-/**
- *
- */
+
 class CategoryController extends Controller
 {
+
     /**
      * Display a paginated listing of the blog categories.
      */
@@ -44,9 +45,20 @@ class CategoryController extends Controller
      */
     public function store(BlogCategoryCreateRequest $request)
     {
+        $data = $request->input();
+        if (empty($data['slug'])) {
+            $data['slug'] = Str::slug($data['title']);
+        }
 
-        dd(__METHOD__);
+        $item = (new BlogCategory())->create($data);
 
+        if ($item) {
+            return redirect()->route('blog.admin.categories.edit', $item->id)
+                ->with(['success' => 'Успешно сохранено']);
+        } else {
+            return back()->withErrors(['msg' => 'Ошибка сохранения'])
+                ->withInput();
+        }
     }
 
     /**
@@ -67,26 +79,13 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param BlogCategoryUpdateRequest $request
      * @param int $id
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(BlogCategoryUpdateRequest $request, int $id)
     {
-//        $rules = [
-//            'title' => 'required|min:5|max:200',
-//            'slug' => 'max:200',
-//            'description' => 'string|min:3|max:200',
-//            'parent_id' => 'required|integer|exists:blog_categories,id',
-//        ];
-
-        //$validatedData = $request->validate($rules);
-
-        //dd($validatedData);
-
-
-
         $item = BlogCategory::query()->find($id);
         if (empty($item)) {
             return back()
@@ -95,7 +94,11 @@ class CategoryController extends Controller
         }
 
         $data = $request->all();
-        $result = $item->fill($data)->save();
+        if (empty($data['slug'])) {
+            $data['slug'] = Str::slug($data['title']);
+        }
+
+        $result = $item->update($data);
 
         if ($result) {
             return redirect()
