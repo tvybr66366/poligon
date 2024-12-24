@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Blog\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BlogCategoryUpdateRequest;
 use App\Models\BlogCategory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 
 class CategoryController extends Controller
 {
@@ -64,16 +64,16 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, int $id)
+    public function update(BlogCategoryUpdateRequest $request, int $id)
     {
-        $rules = [
-            'title' => 'required|min:5|max:200',
-            'slug' => 'max:200',
-            'description' => 'string|min:3|max:200',
-            'parent_id' => 'required|integer|exists:blog_categories,id',
-        ];
+//        $rules = [
+//            'title' => 'required|min:5|max:200',
+//            'slug' => 'max:200',
+//            'description' => 'string|min:3|max:200',
+//            'parent_id' => 'required|integer|exists:blog_categories,id',
+//        ];
 
-        $validatedData = $request->validate($rules);
+        //$validatedData = $request->validate($rules);
 
         //dd($validatedData);
 
