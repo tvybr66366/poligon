@@ -113,6 +113,11 @@ class CategoryController extends BaseController
         //$item = BlogCategory::query()->find($id);
         $item = $this->blogCategoryRepository->getEdit($id);
 
+        /** Why is validation rules describers in controller? BTW this code has more questions
+         * 1. Where is possibility to use translation files for error messages?
+         * 2. Why do on empty id parameter validation says that id not found, nor that id parameter is empty ?
+         *
+         */
         if (empty($item)) {
             return back()
                 ->withErrors(['msg' => "Запись id=[$id] не найдена"])
@@ -120,6 +125,7 @@ class CategoryController extends BaseController
         }
 
         $data = $request->all();
+        // TODO: this is not best idea, it's better to be in constructor or builder of object BlogCategory
         if (empty($data['slug'])) {
             $data['slug'] = Str::slug($data['title']);
         }
