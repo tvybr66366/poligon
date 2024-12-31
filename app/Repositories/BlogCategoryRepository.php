@@ -34,9 +34,39 @@ class BlogCategoryRepository extends CoreRepository
      *
      * @return Collection
      */
-    public function getForComboBox(): Collection
+    public function getForComboBox()
     {
-        return $this->startConditions()->all();
+        $columns = implode(',', [
+            'id',
+            'CONCAT (id, ". ", title) AS title',
+        ]);
+
+        $result = $this
+            ->startConditions()
+            ->selectRaw($columns)
+            ->toBase()
+            ->get();
+
+        return $result;
     }
 
+    /**
+     * Получить категории для вывода пагинатором
+     *
+     * @param int|null $perPage
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getAllWithPaginate($perPage = null)
+    {
+        $columns = ['id', 'title', 'parent_id'];
+
+
+        $result = $this
+            ->startConditions()
+            ->select($columns)
+            ->paginate($perPage);
+
+        return $result;
+    }
 }

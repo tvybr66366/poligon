@@ -10,32 +10,51 @@ use App\Repositories\BlogCategoryRepository;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+
+//use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 
-
-class CategoryController extends Controller
+/**
+ * Управление категориями блога
+ *
+ * @package App\Http\Controllers\Blog\Admin
+ */
+class CategoryController extends BaseController
 {
+    /**
+     * @var BlogCategoryRepository
+     */
+    private $blogCategoryRepository;
+
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->blogCategoryRepository = app(BlogCategoryRepository::class);
+    }
+
 
     /**
      * Display a paginated listing of the blog categories.
+     *
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $paginator = BlogCategory::query()->paginate(15);
+        //$paginator = BlogCategory::query()->paginate(15);
+        $paginator = $this->blogCategoryRepository->getAllWithPaginate(5);
 
         return view('blog.admin.categories.index', compact('paginator'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
      */
     public function create()
     {
         $item = new BlogCategory();
-        $categoryList = BlogCategory::all();
+        $categoryList = $this->blogCategoryRepository->getForComboBox();
 
         return view('blog.admin.categories.edit',
             compact('item', 'categoryList'));
@@ -90,7 +109,7 @@ class CategoryController extends Controller
      * @param BlogCategoryUpdateRequest $request
      * @param int $id
      *
-     * @return RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(BlogCategoryUpdateRequest $request, int $id)
     {
