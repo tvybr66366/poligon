@@ -38,7 +38,7 @@ class CategoryController extends BaseController
     /**
      * Display a paginated listing of the blog categories.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\View\View
      */
     public function index()
     {
@@ -89,15 +89,12 @@ class CategoryController extends BaseController
      */
     public function edit($id, BlogCategoryRepository $categoryRepository)
     {
-        //$item = BlogCategory::query()->findOrFail($id);
-        //$categoryList = BlogCategory::all();
-
-        $item = $categoryRepository->getEdit($id);
+        $item = $this->blogCategoryRepository->getEdit($id);
         if (empty($item)) {
             abort(404);
         }
 
-        $categoryList = $categoryRepository->getForComboBox();
+        $categoryList = $this->blogCategoryRepository->getForComboBox();
 
         return view('blog.admin.categories.edit',
             compact('item', 'categoryList'));
@@ -106,14 +103,16 @@ class CategoryController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param BlogCategoryUpdateRequest $request
+     * @param \Illuminate\Http\Request $request
      * @param int $id
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(BlogCategoryUpdateRequest $request, int $id)
+    public function update(BlogCategoryUpdateRequest $request, $id)
     {
-        $item = BlogCategory::query()->find($id);
+        //$item = BlogCategory::query()->find($id);
+        $item = $this->blogCategoryRepository->getEdit($id);
+
         if (empty($item)) {
             return back()
                 ->withErrors(['msg' => "Запись id=[$id] не найдена"])

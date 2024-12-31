@@ -39,4 +39,24 @@ class BlogCategoryRepository extends CoreRepository
         return $this->startConditions()->all();
     }
 
+    /**
+     * Получить категории для вывода пагинатором
+     *
+     * @param int|null $perPage
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function getAllWithPaginate($perPage = null)
+    {
+        $columns = ['id', 'title', 'parent_id'];
+
+
+        $result = $this
+            ->startConditions()
+            ->select($columns)
+            ->paginate($perPage);
+
+        return $result;
+    }
 }
+
